@@ -6,14 +6,12 @@ target 'Currency Convertor' do
   use_frameworks!
 
   # Pods for Currency Convertor
+  pod 'iOSDropDown'
 
   target 'Currency ConvertorTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
-  target 'Currency ConvertorUITests' do
-    # Pods for testing
-  end
 
 end
