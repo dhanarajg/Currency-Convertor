@@ -16,16 +16,22 @@ class CurrencyConvertorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.addDoneButtonOnKeyboard(textField: currencyAmountTextField, callback: currencyAmountDoneTapped)
+        self.addDoneButtonOnKeyboard(textField: currencyAmountTextField)
     }
     
-    func addDoneButtonOnKeyboard (textField: UITextField, callback: (()->Void) ) {
+    
+    
+    func addDoneButtonOnKeyboard (textField: UITextField) {
         
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         doneToolbar.barStyle = .default
         
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done".localized, style: .done, target: self, action: #selector(currencyAmountDoneTapped))
+        
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Convert".localized, style: .done, target: self, action: #selector(currencyAmountDoneTapped))
+        
+        
+
         
         let items = [flexSpace, done]
         doneToolbar.items = items
