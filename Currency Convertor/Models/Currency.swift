@@ -12,8 +12,3 @@ struct CurrenciesResponse: Decodable {
     let currencies: [String:String]?
 }
 
-
-struct Currency {
-    let country: String?
-    let currencyCode: String?
-}

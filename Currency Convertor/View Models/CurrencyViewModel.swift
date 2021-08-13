@@ -8,8 +8,9 @@
 import Foundation
 
 
-class CurrencyViewModel: NSObject {
+class CurrencyListViewModel: NSObject {
     
+    var currencyViewModels = [CurrencyViewModel]()
     
     func loadExchangeRates () {
         
@@ -24,6 +25,33 @@ class CurrencyViewModel: NSObject {
             return nil
         }
         
-       // Webservice.load(resource)
+        Webservice().load(resource: resource) { [weak self] result in
+            
+            if let result = result {
+                if result.success == true {
+                    
+                    let models = result.currencies ?? [:]
+                    self?.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, country: $0.value)  }
+                    }
+                }
+            }
+            
+            
+        }
+    }
+
+
+
+class CurrencyViewModel: NSObject {
+    
+    let country: String?
+    let currencyCode: String?
+    
+    var exchangeRate: Double = 0
+
+     init (currencyCode: String, country: String) {
+        
+        self.currencyCode = currencyCode
+        self.country = country
     }
 }
