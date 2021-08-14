@@ -7,31 +7,39 @@
 
 import Foundation
 import UIKit
+import iOSDropDown
 
 class CurrencyConvertorViewController: UIViewController {
     
     @IBOutlet weak var currencyAmountTextField: UITextField!
-    
     @IBOutlet weak var exchangeRatesCollectionView: UICollectionView!
+    @IBOutlet weak var currencySelectionTextField: DropDown!
+    
+    let currencyListViewModel = CurrencyListViewModel()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.addDoneButtonOnKeyboard(textField: currencyAmountTextField)
+        self.addDoneButtonOnKeyboard(textField: currencyAmountTextField, keyboardDoneCallback: #selector(currencyAmountDoneTapped))
+        self.loadCurrencies()
     }
     
     
+    func loadCurrencies() {
+        currencyListViewModel.loadExchangeRates()
+    }
     
-    func addDoneButtonOnKeyboard (textField: UITextField) {
+    
+    func addDoneButtonOnKeyboard (textField: UITextField, keyboardDoneCallback: Selector?) {
         
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         doneToolbar.barStyle = .default
         
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Convert".localized, style: .done, target: self, action: #selector(currencyAmountDoneTapped))
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Convert".localized, style: .done, target: self, action: keyboardDoneCallback)
         
-        
-
         
         let items = [flexSpace, done]
         doneToolbar.items = items
@@ -43,13 +51,23 @@ class CurrencyConvertorViewController: UIViewController {
     @objc func currencyAmountDoneTapped() {
         currencyAmountTextField.resignFirstResponder()
     }
+}
 
+
+extension CurrencyConvertorViewController: UITextFieldDelegate {
+   
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let numberCharSet = CharacterSet(charactersIn: ".").union(CharacterSet.decimalDigits)
-        let characterSet = CharacterSet(charactersIn: string)
-        return numberCharSet.isSuperset(of: characterSet)
-    }
+                
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return true }
 
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        if let _ = Double(updatedText) {
+            return true
+        }
+        
+        return false
+    }
 }
 
 
@@ -65,8 +83,31 @@ extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectio
             fatalError("ExchangeRateCollectionViewCell not found!")
         }
         
+        let currency = self.currencyListViewModel.currencyViewModels[indexPath.row]
+        cell.countryLabel.text = currency.country
+        cell.exhangeAmountLabel.text = String(currency.exchangeAmount)
+        cell.rateLabel.text = String(currency.usdExchangeRate)
+        
         return cell
     }
+}
+
+
+extension CurrencyConvertorViewController {
     
-    
+    func showAlertOnUI(message: String) {
+        
+        let alert = UIAlertController.init(title: "Alert!".localized, message: message.localized, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction.init(title: "OK".localized, style: .cancel) )
+        
+        self.present(alert, animated: true) {
+        }
+    }
+
+    func reloadExhangeRates() {
+        
+        self.currencySelectionTextField.optionArray = currencyListViewModel.currencyList
+        self.exchangeRatesCollectionView.reloadData()
+    }
 }

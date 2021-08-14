@@ -12,6 +12,16 @@ class CurrencyListViewModel: NSObject {
     
     var currencyViewModels = [CurrencyViewModel]()
     var showAlertOnUI: ((String) -> Void)?
+    var reloadExhangeRates: (() -> Void)?
+    
+    var currencyList: [String] {
+     
+        let currencylist = currencyViewModels.map { currencyVM in
+            return (currencyVM.country ?? "") + (currencyVM.currencyCode ?? "")
+        }
+        
+        return currencylist
+    }
     
     
     func loadExchangeRates () {
@@ -57,4 +67,10 @@ class CurrencyViewModel: NSObject {
         self.currencyCode = currencyCode
         self.country = country
     }
+    
+    var exchangeAmount: Double {
+        
+        return 1.0
+    }
+    
 }
