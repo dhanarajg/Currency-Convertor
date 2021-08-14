@@ -44,6 +44,12 @@ class CurrencyConvertorViewController: UIViewController {
         currencyAmountTextField.resignFirstResponder()
     }
 
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let numberCharSet = CharacterSet(charactersIn: ".").union(CharacterSet.decimalDigits)
+        let characterSet = CharacterSet(charactersIn: string)
+        return numberCharSet.isSuperset(of: characterSet)
+    }
+
 }
 
 

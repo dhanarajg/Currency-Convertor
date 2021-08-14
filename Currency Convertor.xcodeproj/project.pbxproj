@@ -109,17 +109,14 @@
 		0F60AE1B26C63ED10010D1F0 /* Currency Convertor */ = {
 			isa = PBXGroup;
 			children = (
+				0F60AE6126C688FD0010D1F0 /* Misc */,
+				0F60AE5226C64EE20010D1F0 /* Extensions */,
 				0F60AE5E26C671EF0010D1F0 /* Utils */,
+				0F60AE5526C669450010D1F0 /* Models */,
+				0F60AE4C26C642920010D1F0 /* Views */,
 				0F60AE5B26C66EDB0010D1F0 /* View Models */,
 				0F60AE5826C66CD90010D1F0 /* Web Services */,
-				0F60AE5526C669450010D1F0 /* Models */,
-				0F60AE5226C64EE20010D1F0 /* Extensions */,
-				0F60AE4C26C642920010D1F0 /* Views */,
-				0F60AE1C26C63ED20010D1F0 /* AppDelegate.swift */,
-				0F60AE1E26C63ED20010D1F0 /* SceneDelegate.swift */,
 				0F60AE2226C63ED20010D1F0 /* Main.storyboard */,
-				0F60AE2526C63ED30010D1F0 /* Assets.xcassets */,
-				0F60AE2726C63ED30010D1F0 /* LaunchScreen.storyboard */,
 				0F60AE2A26C63ED30010D1F0 /* Info.plist */,
 			);
 			path = "Currency Convertor";
@@ -198,6 +195,17 @@
 				0F60AE5F26C671FB0010D1F0 /* Constants.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		0F60AE6126C688FD0010D1F0 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				0F60AE1C26C63ED20010D1F0 /* AppDelegate.swift */,
+				0F60AE1E26C63ED20010D1F0 /* SceneDelegate.swift */,
+				0F60AE2526C63ED30010D1F0 /* Assets.xcassets */,
+				0F60AE2726C63ED30010D1F0 /* LaunchScreen.storyboard */,
+			);
+			path = Misc;
 			sourceTree = "<group>";
 		};
 		72E49E22297DC7C8D74E3BF8 /* Frameworks */ = {

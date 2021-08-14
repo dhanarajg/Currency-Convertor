@@ -11,6 +11,8 @@ import Foundation
 class CurrencyListViewModel: NSObject {
     
     var currencyViewModels = [CurrencyViewModel]()
+    var showAlertOnUI: ((String) -> Void)?
+    
     
     func loadExchangeRates () {
         
@@ -18,12 +20,13 @@ class CurrencyListViewModel: NSObject {
         let resource = Resource<CurrenciesResponse>.init(url: url) { data in
             
             if let currencies = try? JSONDecoder().decode(CurrenciesResponse.self, from: data) {
-
+                
                 return currencies
             }
-
+            
             return nil
         }
+        
         
         Webservice().load(resource: resource) { [weak self] result in
             
@@ -32,13 +35,14 @@ class CurrencyListViewModel: NSObject {
                     
                     let models = result.currencies ?? [:]
                     self?.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, country: $0.value)  }
-                    }
                 }
+            } else {
+                //display error
+                self?.showAlertOnUI?("Unknown error occured. Please check after some time!".localized)
             }
-            
-            
         }
     }
+}
 
 
 
@@ -46,10 +50,9 @@ class CurrencyViewModel: NSObject {
     
     let country: String?
     let currencyCode: String?
+    var usdExchangeRate: Double = 0
     
-    var exchangeRate: Double = 0
-
-     init (currencyCode: String, country: String) {
+    init (currencyCode: String, country: String) {
         
         self.currencyCode = currencyCode
         self.country = country
