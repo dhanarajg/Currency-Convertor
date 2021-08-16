@@ -88,7 +88,7 @@ extension CurrencyConvertorViewController: UITextFieldDelegate {
         
         if true == updatedText.isEmpty {
             return true
-        }        
+        }
         
         return false
     }

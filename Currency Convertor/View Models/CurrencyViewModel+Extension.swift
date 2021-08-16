@@ -38,7 +38,6 @@ extension CurrencyListViewModel {
             currencyVM?.usdExchangeRate = model.value
             currencyVM?.usdCurrencyCode = model.key
             
-            print(currencyVM?.usdCurrencyCode)
             return currencyVM!
         }
     }
