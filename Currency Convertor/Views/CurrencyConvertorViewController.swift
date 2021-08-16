@@ -126,7 +126,6 @@ extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectio
 
 extension CurrencyConvertorViewController: CurrencyListViewModelDelegate {
 
-    
     func showAlertOnUI(message: String) {
         
         let alert = UIAlertController.init(title: "Alert!".localized, message: message.localized, preferredStyle: .alert)
@@ -150,7 +149,8 @@ extension CurrencyConvertorViewController: CurrencyListViewModelDelegate {
     func showProgressBar(show: Bool) {
         
         if show {
-            ProgressHUD.show(icon: .rotate)
+            ProgressHUD.animationType = .circleRotateChase
+           ProgressHUD.show()
         } else {
             ProgressHUD.dismiss()
         }

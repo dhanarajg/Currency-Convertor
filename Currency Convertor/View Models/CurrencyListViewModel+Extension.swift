@@ -1,5 +1,5 @@
 //
-//  CurrencyViewModel+Extension.swift
+//  CurrencyListViewModel+Extension.swift
 //  Currency Convertor
 //
 //  Created by Dhanaraj on 16/08/21.
