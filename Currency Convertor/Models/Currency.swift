@@ -13,10 +13,8 @@ struct CurrencyListResponse: Decodable {
 }
 
 
-struct CurrencyValuesResponse: Codable {
+struct CurrencyExchangeResponse: Codable {
     let success: Bool?
-    let terms, privacy: String?
-    let timestamp: Int?
     let source: String?
     let quotes: [String: Double]?
 }

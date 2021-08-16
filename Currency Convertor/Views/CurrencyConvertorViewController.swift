@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import iOSDropDown
+import ProgressHUD
 
 class CurrencyConvertorViewController: UIViewController {
     
@@ -16,13 +17,21 @@ class CurrencyConvertorViewController: UIViewController {
     @IBOutlet weak var currencySelectionTextField: DropDown!
     
     let currencyListViewModel = CurrencyListViewModel()
-    
+    var selectedCountryCode: String = "USD"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.addDoneButtonOnKeyboard(textField: currencyAmountTextField, keyboardDoneCallback: #selector(currencyAmountDoneTapped))
         self.loadCurrencies()
+        
+        currencySelectionTextField.didSelect { [weak self] title, index, id in
+            self?.currencyDidSelect(countrycode: title, index: index)
+        }
+        
+        currencyListViewModel.showAlertOnUI = showAlertOnUI
+        currencyListViewModel.exhangeRatesDidLoad = exhangeRatesDidLoad
+        currencyListViewModel.showProgressBar = showProgressBar
     }
     
     
@@ -30,6 +39,14 @@ class CurrencyConvertorViewController: UIViewController {
         currencyListViewModel.loadExchangeData()
     }
     
+    
+    func currencyDidSelect(countrycode: String, index: Int) {
+        
+        self.selectedCountryCode = self.currencyListViewModel.currencyCodeForIndex(countryCode: countrycode, index: index)
+        self.exchangeRatesCollectionView.reloadData()
+        
+    }
+
     
     func addDoneButtonOnKeyboard (textField: UITextField, keyboardDoneCallback: Selector?) {
         
@@ -50,6 +67,7 @@ class CurrencyConvertorViewController: UIViewController {
     
     @objc func currencyAmountDoneTapped() {
         currencyAmountTextField.resignFirstResponder()
+        self.exchangeRatesCollectionView.reloadData()
     }
 }
 
@@ -74,7 +92,7 @@ extension CurrencyConvertorViewController: UITextFieldDelegate {
 
 extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return self.currencyListViewModel.numberOfExchanges()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -84,15 +102,20 @@ extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectio
         }
         
         let currencyAmount = Double(currencyAmountTextField.text ?? "0") ?? 0
-        let countryCode = currencySelectionTextField.text ?? ""
         
-        let currency = self.currencyListViewModel.currencyViewModels[indexPath.row]
-        cell.countryLabel.text = currency.country
-        cell.exhangeAmountLabel.text = String(currency.exchangeValue(amount: currencyAmount, countryCode: countryCode))
-        cell.rateLabel.text = String(currency.usdExchangeRate)
+        let currency = self.currencyListViewModel.currencyAtIndex(index:indexPath.row)
+        cell.countryLabel.text = currency.currencyCode
+        cell.exhangeAmountLabel.text = String(format: "%.2f", currency.exchangeValue(amount: currencyAmount, countryCode: selectedCountryCode))
+        cell.rateLabel.text = String(format: "%.2f", currency.usdExchangeRate)
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+    {
+       return CGSize(width: 158, height: 112)
+    }
+
 }
 
 
@@ -107,9 +130,21 @@ extension CurrencyConvertorViewController {
     }
     
     
-    func reloadExhangeRates() {
+    func exhangeRatesDidLoad() {
         
         self.currencySelectionTextField.optionArray = currencyListViewModel.currencyList
-        self.exchangeRatesCollectionView.reloadData()
+        self.currencySelectionTextField.selectedIndex = 0
+        self.currencySelectionTextField.text = currencyListViewModel.currencyList[0]
+        self.currencyDidSelect(countrycode: currencyListViewModel.currencyList[0], index: 0)
+    }
+    
+    
+    func showProgressBar(show: Bool) {
+        
+        if show {
+            ProgressHUD.show(icon: .rotate)
+        } else {
+            ProgressHUD.dismiss()
+        }
     }
 }

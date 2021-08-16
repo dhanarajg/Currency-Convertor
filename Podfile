@@ -8,7 +8,8 @@ target 'Currency Convertor' do
   # Pods for Currency Convertor
   pod 'iOSDropDown'
   pod 'ReachabilitySwift'
-  
+  pod 'ProgressHUD'
+
   target 'Currency ConvertorTests' do
     inherit! :search_paths
     # Pods for testing
