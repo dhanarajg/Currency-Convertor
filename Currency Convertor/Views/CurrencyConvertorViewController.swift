@@ -27,7 +27,7 @@ class CurrencyConvertorViewController: UIViewController {
     
     
     func loadCurrencies() {
-        currencyListViewModel.loadExchangeRates()
+        currencyListViewModel.loadExchangeData()
     }
     
     
@@ -55,12 +55,12 @@ class CurrencyConvertorViewController: UIViewController {
 
 
 extension CurrencyConvertorViewController: UITextFieldDelegate {
-   
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-                
+        
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return true }
-
+        
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         if let _ = Double(updatedText) {
             return true
@@ -83,9 +83,12 @@ extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectio
             fatalError("ExchangeRateCollectionViewCell not found!")
         }
         
+        let currencyAmount = Double(currencyAmountTextField.text ?? "0") ?? 0
+        let countryCode = currencySelectionTextField.text ?? ""
+        
         let currency = self.currencyListViewModel.currencyViewModels[indexPath.row]
         cell.countryLabel.text = currency.country
-        cell.exhangeAmountLabel.text = String(currency.exchangeAmount)
+        cell.exhangeAmountLabel.text = String(currency.exchangeValue(amount: currencyAmount, countryCode: countryCode))
         cell.rateLabel.text = String(currency.usdExchangeRate)
         
         return cell
@@ -98,13 +101,12 @@ extension CurrencyConvertorViewController {
     func showAlertOnUI(message: String) {
         
         let alert = UIAlertController.init(title: "Alert!".localized, message: message.localized, preferredStyle: .alert)
-        
         alert.addAction(UIAlertAction.init(title: "OK".localized, style: .cancel) )
         
-        self.present(alert, animated: true) {
-        }
+        self.present(alert, animated: true, completion: nil)
     }
-
+    
+    
     func reloadExhangeRates() {
         
         self.currencySelectionTextField.optionArray = currencyListViewModel.currencyList

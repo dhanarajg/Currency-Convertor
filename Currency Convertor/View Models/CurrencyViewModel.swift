@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Reachability
 
 
 class CurrencyListViewModel: NSObject {
@@ -14,26 +15,25 @@ class CurrencyListViewModel: NSObject {
     var showAlertOnUI: ((String) -> Void)?
     var reloadExhangeRates: (() -> Void)?
     
+    var timer: Timer?
+    
     var currencyList: [String] {
-     
+        
         let currencylist = currencyViewModels.map { currencyVM in
             return (currencyVM.country ?? "") + (currencyVM.currencyCode ?? "")
         }
-        
         return currencylist
     }
     
     
-    func loadExchangeRates () {
+    private func loadCourrencyList() {
         
         let url = Constants.urlForListOfExchanges()
-        let resource = Resource<CurrenciesResponse>.init(url: url) { data in
+        let resource = Resource<CurrencyListResponse>.init(url: url) { data in
             
-            if let currencies = try? JSONDecoder().decode(CurrenciesResponse.self, from: data) {
-                
+            if let currencies = try? JSONDecoder().decode(CurrencyListResponse.self, from: data) {
                 return currencies
             }
-            
             return nil
         }
         
@@ -45,12 +45,46 @@ class CurrencyListViewModel: NSObject {
                     
                     let models = result.currencies ?? [:]
                     self?.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, country: $0.value)  }
+                    
+                    DispatchQueue.main.async {
+                        if let reloadExhangeRates = self?.reloadExhangeRates {
+                            reloadExhangeRates()
+                        }
+                    }
                 }
             } else {
-                //display error
-                self?.showAlertOnUI?("Unknown error occured. Please check after some time!".localized)
+                
+                DispatchQueue.main.async {
+                    self?.showAlertOnUI?("You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
+                }
+                
             }
         }
+        
+    }
+    
+    private func loadCurrencyExchangeRates() {
+        
+    }
+    
+    
+    func loadExchangeData () {
+        
+        let reachability = try! Reachability()
+        
+        if (reachability.connection == .unavailable) {
+            
+            self.showAlertOnUI?("Please check your internet connection!".localized)
+            return
+        }
+        
+        self.timer = Timer.scheduledTimer(withTimeInterval: 60*30, repeats: true) { [weak self] timer in
+            
+            self?.loadCourrencyList()
+            self?.loadCurrencyExchangeRates()
+            
+        }
+        
     }
 }
 
@@ -68,9 +102,13 @@ class CurrencyViewModel: NSObject {
         self.country = country
     }
     
-    var exchangeAmount: Double {
-        
-        return 1.0
+    func exchangeValue(amount: Double, countryCode: String ) -> Double {
+        return usdExchangeRate * amount
     }
     
+    
+//    var exchangeAmount: Double {
+//
+//        return 1.0
+//    }
 }

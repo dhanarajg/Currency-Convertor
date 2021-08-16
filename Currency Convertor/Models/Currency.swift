@@ -7,8 +7,16 @@
 
 import Foundation
 
-struct CurrenciesResponse: Decodable {
+struct CurrencyListResponse: Decodable {
     let success: Bool?
     let currencies: [String:String]?
 }
 
+
+struct CurrencyValuesResponse: Codable {
+    let success: Bool?
+    let terms, privacy: String?
+    let timestamp: Int?
+    let source: String?
+    let quotes: [String: Double]?
+}
