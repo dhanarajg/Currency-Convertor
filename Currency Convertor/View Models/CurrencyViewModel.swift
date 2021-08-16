@@ -71,6 +71,16 @@ class CurrencyListViewModel: NSObject {
     }
     
     
+    func convertCurrency(amountToConvert: Double, sourceUsdRate: Double, destinationUsdRate: Double) -> Double {
+        
+        //1. convert amount to USD
+        //2. multiply it by usd rate to destini usd rate
+        let usd = amountToConvert / sourceUsdRate
+        let convertedAmount = usd * destinationUsdRate
+        return convertedAmount
+
+    }
+    
     //logic is to do every calculation in USD.
     func currencyExchangeAmount (amountToConvert: Double, selectedCountryCode: String, destinationCountryCode: String, index: Int) -> Double {
     
@@ -78,10 +88,7 @@ class CurrencyListViewModel: NSObject {
         let destinationVM = self.currencyViewModelForCountryCode(countryCode: destinationCountryCode, sourceCountryCode: "")
 
 
-        //1. convert amount to USD
-        //2. multiply it by usd rate to destini usd rate
-        let usd = amountToConvert / (selectedCountryVM?.usdExchangeRate ?? 1)
-        let convertedAmount = usd * (destinationVM?.usdExchangeRate ?? 1)
+        let convertedAmount = self.convertCurrency(amountToConvert: amountToConvert, sourceUsdRate: selectedCountryVM?.usdExchangeRate ?? 1, destinationUsdRate: destinationVM?.usdExchangeRate ?? 1)
         return convertedAmount
     }
     
@@ -98,7 +105,7 @@ class CurrencyViewModel: NSObject {
     let country: String?
     let currencyCode: String?
     var usdExchangeRate: Double = 0
-    
+
     init (currencyCode: String, country: String) {
         
         self.currencyCode = currencyCode
