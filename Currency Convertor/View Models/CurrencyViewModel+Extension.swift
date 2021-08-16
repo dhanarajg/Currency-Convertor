@@ -106,7 +106,7 @@ extension CurrencyListViewModel {
                     
                     //Create models for supported countries
                     let models = result.currencies ?? [:]
-                    self?.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, currencyName: $0.value)  }.sorted(by: ({ $0.currencyName! < $1.currencyName! }))
+                    self?.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, currencyName: $0.value)  }
                     
                     //Load the live rate of exchange
                     self?.loadLiveCurrencyExchangeRates()

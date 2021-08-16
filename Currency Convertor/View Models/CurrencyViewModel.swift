@@ -57,7 +57,7 @@ class CurrencyListViewModel: NSObject {
            return displayname
         }
         
-        return list.sorted(by: ({ $0 < $1 }))
+        return list
     }
     
     func currencyAtIndex(index: Int) -> CurrencyViewModel {
