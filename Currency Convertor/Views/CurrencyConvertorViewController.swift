@@ -103,10 +103,14 @@ extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectio
         
         let currencyAmount = Double(currencyAmountTextField.text ?? "0") ?? 0
         
-        let currency = self.currencyListViewModel.currencyAtIndex(index:indexPath.row)
-        cell.countryLabel.text = currency.currencyCode
-        cell.exhangeAmountLabel.text = String(format: "%.2f", currency.exchangeValue(amount: currencyAmount, countryCode: selectedCountryCode))
-        cell.rateLabel.text = String(format: "%.2f", currency.usdExchangeRate)
+        let currencyVM = self.currencyListViewModel.currencyAtIndex(index:indexPath.row)
+        
+        let exchangeAmount = self.currencyListViewModel.currencyExchangeAmount(amountToConvert: currencyAmount, selectedCountryCode: self.selectedCountryCode ?? "", destinationCountryCode: currencyVM.currencyCode ?? "", index: indexPath.row)
+        
+        cell.countryLabel.text = currencyVM.currencyCode
+
+        cell.exhangeAmountLabel.text = String(format: "%.2f", exchangeAmount)
+        cell.rateLabel.text = String(format: "%.2f", currencyVM.usdExchangeRate)
         
         return cell
     }
@@ -119,7 +123,8 @@ extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectio
 }
 
 
-extension CurrencyConvertorViewController {
+extension CurrencyConvertorViewController: CurrencyListViewModelDelegate {
+
     
     func showAlertOnUI(message: String) {
         

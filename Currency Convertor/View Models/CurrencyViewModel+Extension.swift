@@ -8,28 +8,25 @@
 import Foundation
 
 //Web service related extesnions
-
 extension CurrencyListViewModel {
     
-    
     func currencyViewModelForCountryCode(countryCode: String, sourceCountryCode: String) -> CurrencyViewModel! {
-        
         
         let countries = self.currencyViewModels.filter { currencyVM in
             
             let actualCountryCodeKey = sourceCountryCode + (currencyVM.currencyCode ?? "")
             return actualCountryCodeKey == countryCode ? true : false
-            
         }
         
         if countries.count > 0 {
-            
+
             return countries[0]
         } else {
             
-            //create a custom vm and default values
+            //create a custom vm with default values
             return CurrencyViewModel(currencyCode: countryCode, country: countryCode)  }
     }
+    
     
     
     func loadLiveCurrencyExchangeRates() {
@@ -43,9 +40,13 @@ extension CurrencyListViewModel {
             return nil
         }
         
+        DispatchQueue.main.async {
+            
+            self.showProgressBar?(true)
+        }
+        
         Webservice().load(resource: resource) { [weak self] result in
             
-            self?.showProgressBar?(true)
             
             if let result = result {
                 if result.success == true {
@@ -57,25 +58,18 @@ extension CurrencyListViewModel {
                         
                         currencyVM?.usdExchangeRate = model.value
                         return currencyVM!
-                        
                     }
                     
                     DispatchQueue.main.async {
-                        if let exhangeRatesDidLoad = self?.exhangeRatesDidLoad {
-                            
-                            DispatchQueue.main.async {
-                                self?.showProgressBar?(false)
-                            }
 
-                            exhangeRatesDidLoad()
-                        }
+                        self?.exhangeRatesDidLoad?()
+                        self?.showProgressBar?(false)
                     }
-                    
                 } else {
                     
                     DispatchQueue.main.async {
-                        self?.showProgressBar?(false)
 
+                        self?.showProgressBar?(false)
                         self?.showAlertOnUI?("You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
                     }
                 }
@@ -85,7 +79,7 @@ extension CurrencyListViewModel {
     
     
     
-    func loadCourencyList() {
+    func loadCurrencyList() {
         
         let listOfExchangesUrl = Constants.urlForListOfExchanges()
         let resource = Resource<CurrencyListResponse>.init(url: listOfExchangesUrl) { data in
@@ -102,10 +96,7 @@ extension CurrencyListViewModel {
         }
         
         
-        DispatchQueue.main.async {
-            
-            self.showProgressBar?(true)
-        }
+        self.showProgressBar?(true)
 
         Webservice().load(resource: resource) { [weak self] result in
             
@@ -125,8 +116,7 @@ extension CurrencyListViewModel {
                     
                     self?.showProgressBar?(false)
                     self?.showAlertOnUI?("You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
-                }
-                
+                }                
             }
         }
     }

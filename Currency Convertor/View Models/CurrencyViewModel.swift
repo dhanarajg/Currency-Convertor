@@ -8,6 +8,13 @@
 import Foundation
 import Reachability
 
+protocol CurrencyListViewModelDelegate {
+    
+    func showAlertOnUI(message: String)
+    func exhangeRatesDidLoad()
+    func showProgressBar(show: Bool)
+}
+
 
 class CurrencyListViewModel: NSObject {
     
@@ -17,6 +24,7 @@ class CurrencyListViewModel: NSObject {
     var showProgressBar:((Bool) -> Void)?
     
     var timer: Timer?
+    
     
     var currencyList: [String] {
         
@@ -28,12 +36,7 @@ class CurrencyListViewModel: NSObject {
     }
     
     
-    
-    func currencyAtIndex(index: Int) -> CurrencyViewModel {
-        
-        return currencyViewModels[index]
-    }
-    
+    //loads data from server via api
     func loadExchangeData() {
         
         let reachability = try! Reachability()
@@ -46,25 +49,43 @@ class CurrencyListViewModel: NSObject {
         }
         
         //load currency and exchange rates
-        self.loadCourencyList()
-
+        self.loadCurrencyList()
+        
         //Periodically update live rates (30 minutes)
         self.timer = Timer.scheduledTimer(withTimeInterval: 60*30, repeats: true) { [weak self] timer in
             
-            self?.loadCourencyList()
+            self?.loadCurrencyList()
         }
     }
     
     
+    func currencyAtIndex(index: Int) -> CurrencyViewModel {
+        
+        return currencyViewModels[index]
+    }
+
+    
     func currencyCodeForIndex(countryCode: String, index: Int) -> String {
-        return self.currencyList[index]
+
+        return self.currencyViewModels[index].currencyCode ?? "USD"
     }
     
-    func currencyExchangeRate (countryCode: String) -> Double {
     
-        return 100
+    //logic is to do every calculation in USD.
+    func currencyExchangeAmount (amountToConvert: Double, selectedCountryCode: String, destinationCountryCode: String, index: Int) -> Double {
+    
+        let selectedCountryVM = self.currencyViewModelForCountryCode(countryCode: selectedCountryCode, sourceCountryCode: "")
+        let destinationVM = self.currencyViewModelForCountryCode(countryCode: destinationCountryCode, sourceCountryCode: "")
+
+
+        //1. convert amount to USD
+        //2. multiply it by usd rate to destini usd rate
+        let usd = amountToConvert / (selectedCountryVM?.usdExchangeRate ?? 1)
+        let convertedAmount = usd * (destinationVM?.usdExchangeRate ?? 1)
+        return convertedAmount
     }
     
+
     func numberOfExchanges() -> Int {
         return self.currencyList.count
     }
@@ -84,14 +105,5 @@ class CurrencyViewModel: NSObject {
         self.country = country
     }
     
-    func exchangeValue(amount: Double, countryCode: String ) -> Double {
-        return usdExchangeRate * amount
-    }
-    
-    
-//    var exchangeRate: Double {
-//
-//        return 1.0
-//    }
 }
 
