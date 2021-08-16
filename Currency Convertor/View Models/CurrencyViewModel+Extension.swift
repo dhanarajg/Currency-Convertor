@@ -19,12 +19,12 @@ extension CurrencyListViewModel {
         }
         
         if countries.count > 0 {
-
+         
             return countries[0]
         } else {
             
             //create a custom vm with default values
-            return CurrencyViewModel(currencyCode: countryCode, country: countryCode)  }
+            return CurrencyViewModel(currencyCode: countryCode, currencyName: countryCode)  }
     }
     
     
@@ -57,6 +57,7 @@ extension CurrencyListViewModel {
                         let currencyVM = self?.currencyViewModelForCountryCode(countryCode: model.key, sourceCountryCode: result.source ?? "")
                         
                         currencyVM?.usdExchangeRate = model.value
+                        currencyVM?.usdCurrencyCode = model.key
                         return currencyVM!
                     }
                     
@@ -105,13 +106,14 @@ extension CurrencyListViewModel {
                     
                     //Create models for supported countries
                     let models = result.currencies ?? [:]
-                    self?.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, country: $0.value)  }
+                    self?.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, currencyName: $0.value)  }.sorted(by: ({ $0.currencyName! < $1.currencyName! }))
                     
                     //Load the live rate of exchange
                     self?.loadLiveCurrencyExchangeRates()
                 }
             } else {
                 
+                //some error occured!
                 DispatchQueue.main.async {
                     
                     self?.showProgressBar?(false)

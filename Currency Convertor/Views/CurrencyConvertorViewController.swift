@@ -20,10 +20,10 @@ class CurrencyConvertorViewController: UIViewController {
     var selectedCountryCode: String = "USD"
     
     override func viewDidLoad() {
+      
         super.viewDidLoad()
         
         self.addDoneButtonOnKeyboard(textField: currencyAmountTextField, keyboardDoneCallback: #selector(currencyAmountDoneTapped))
-        self.loadCurrencies()
         
         currencySelectionTextField.didSelect { [weak self] title, index, id in
             self?.currencyDidSelect(countrycode: title, index: index)
@@ -32,6 +32,8 @@ class CurrencyConvertorViewController: UIViewController {
         currencyListViewModel.showAlertOnUI = showAlertOnUI
         currencyListViewModel.exhangeRatesDidLoad = exhangeRatesDidLoad
         currencyListViewModel.showProgressBar = showProgressBar
+        
+        self.loadCurrencies()
     }
     
     
@@ -42,7 +44,7 @@ class CurrencyConvertorViewController: UIViewController {
     
     func currencyDidSelect(countrycode: String, index: Int) {
         
-        self.selectedCountryCode = self.currencyListViewModel.currencyCodeForIndex(countryCode: countrycode, index: index)
+        self.selectedCountryCode = self.currencyListViewModel.currencyCodeForIndex(index: index)
         self.exchangeRatesCollectionView.reloadData()
         
     }
@@ -84,6 +86,11 @@ extension CurrencyConvertorViewController: UITextFieldDelegate {
             return true
         }
         
+        if true == updatedText.isEmpty {
+            return true
+        }
+        
+        
         return false
     }
 }
@@ -102,24 +109,17 @@ extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectio
         }
         
         let currencyAmount = Double(currencyAmountTextField.text ?? "0") ?? 0
-        
         let currencyVM = self.currencyListViewModel.currencyAtIndex(index:indexPath.row)
         
-        let exchangeAmount = self.currencyListViewModel.currencyExchangeAmount(amountToConvert: currencyAmount, selectedCountryCode: self.selectedCountryCode ?? "", destinationCountryCode: currencyVM.currencyCode ?? "", index: indexPath.row)
+        let exchangeAmount = self.currencyListViewModel.currencyExchangeAmount(amountToConvert: currencyAmount, selectedCountryCode: self.selectedCountryCode , destinationCountryCode: currencyVM.currencyCode ?? "", index: indexPath.row)
         
         cell.countryLabel.text = currencyVM.currencyCode
-
         cell.exhangeAmountLabel.text = String(format: "%.2f", exchangeAmount)
         cell.rateLabel.text = String(format: "%.2f", currencyVM.usdExchangeRate)
         
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-    {
-       return CGSize(width: 158, height: 112)
-    }
-
 }
 
 
@@ -137,10 +137,12 @@ extension CurrencyConvertorViewController: CurrencyListViewModelDelegate {
     
     func exhangeRatesDidLoad() {
         
-        self.currencySelectionTextField.optionArray = currencyListViewModel.currencyList
+        let currencyListDisplayNames = currencyListViewModel.currencyListDisplayNames()
+        self.currencySelectionTextField.optionArray = currencyListDisplayNames
+
         self.currencySelectionTextField.selectedIndex = 0
-        self.currencySelectionTextField.text = currencyListViewModel.currencyList[0]
-        self.currencyDidSelect(countrycode: currencyListViewModel.currencyList[0], index: 0)
+        self.currencySelectionTextField.text = currencyListDisplayNames[0]
+        self.currencyDidSelect(countrycode: currencyListDisplayNames[0], index: 0)
     }
     
     
