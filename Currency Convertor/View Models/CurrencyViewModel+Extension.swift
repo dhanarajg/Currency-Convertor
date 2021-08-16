@@ -19,7 +19,7 @@ extension CurrencyListViewModel {
         }
         
         if countries.count > 0 {
-         
+            
             return countries[0]
         } else {
             
@@ -27,6 +27,21 @@ extension CurrencyListViewModel {
             return CurrencyViewModel(currencyCode: countryCode, currencyName: countryCode)  }
     }
     
+    
+    func createVMForCurrencyExchangeResponse(result: CurrencyExchangeResponse) {
+        
+        let models = result.quotes ?? [:]
+        self.currencyViewModels = models.map { model in
+
+            let currencyVM = self.currencyViewModelForCountryCode(countryCode: model.key, sourceCountryCode: result.source ?? "")
+            
+            currencyVM?.usdExchangeRate = model.value
+            currencyVM?.usdCurrencyCode = model.key
+            
+            print(currencyVM?.usdCurrencyCode)
+            return currencyVM!
+        }
+    }
     
     
     func loadLiveCurrencyExchangeRates() {
@@ -51,25 +66,17 @@ extension CurrencyListViewModel {
             if let result = result {
                 if result.success == true {
                     
-                    let models = result.quotes ?? [:]
-                    self?.currencyViewModels = models.map { model in
-                        
-                        let currencyVM = self?.currencyViewModelForCountryCode(countryCode: model.key, sourceCountryCode: result.source ?? "")
-                        
-                        currencyVM?.usdExchangeRate = model.value
-                        currencyVM?.usdCurrencyCode = model.key
-                        return currencyVM!
-                    }
+                    self?.createVMForCurrencyExchangeResponse(result: result)
                     
                     DispatchQueue.main.async {
-
+                        
                         self?.exhangeRatesDidLoad?()
                         self?.showProgressBar?(false)
                     }
                 } else {
                     
                     DispatchQueue.main.async {
-
+                        
                         self?.showProgressBar?(false)
                         self?.showAlertOnUI?("You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
                     }
@@ -92,13 +99,13 @@ extension CurrencyListViewModel {
             DispatchQueue.main.async {
                 self.showProgressBar?(false)
             }
-
+            
             return nil
         }
         
         
         self.showProgressBar?(true)
-
+        
         Webservice().load(resource: resource) { [weak self] result in
             
             if let result = result {

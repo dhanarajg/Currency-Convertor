@@ -51,10 +51,10 @@ class CurrencyListViewModel: NSObject {
     
     func currencyListDisplayNames() -> [String] {
         
-        var list = self.currencyViewModels.map { currencyVM -> String in
-                      
+        let list = self.currencyViewModels.map { currencyVM -> String in
+            
             let displayname = (currencyVM.currencyName ?? "") + " / " + (currencyVM.currencyCode ?? "")
-           return displayname
+            return displayname
         }
         
         return list
@@ -64,10 +64,10 @@ class CurrencyListViewModel: NSObject {
         
         return currencyViewModels[index]
     }
-
+    
     
     func currencyCodeForIndex(index: Int) -> String {
-
+        
         return self.currencyViewModels[index].currencyCode ?? "USD"
     }
     
@@ -80,19 +80,19 @@ class CurrencyListViewModel: NSObject {
         let usd = amountToConvert / sourceUsdRate
         let convertedAmount = usd * destinationUsdRate
         return convertedAmount
-
+        
     }
     
     func currencyExchangeAmount (amountToConvert: Double, selectedCountryCode: String, destinationCountryCode: String, index: Int) -> Double {
-    
+        
         let selectedCountryVM = self.currencyViewModelForCountryCode(countryCode: selectedCountryCode, sourceCountryCode: "")
         let destinationVM = self.currencyViewModelForCountryCode(countryCode: destinationCountryCode, sourceCountryCode: "")
-
+        
         let convertedAmount = self.convertCurrency(amountToConvert: amountToConvert, sourceUsdRate: selectedCountryVM?.usdExchangeRate ?? 1, destinationUsdRate: destinationVM?.usdExchangeRate ?? 1)
         return convertedAmount
     }
     
-
+    
     func numberOfExchanges() -> Int {
         return self.currencyViewModels.count
     }
@@ -107,7 +107,7 @@ class CurrencyViewModel: NSObject {
     
     var usdExchangeRate: Double = 0 //conversion rate 57.8936, 1.269072, etc
     var usdCurrencyCode: String = "" //USDAED, USDAWG, etc
-
+    
     init (currencyCode: String, currencyName: String) {
         
         self.currencyCode = currencyCode
