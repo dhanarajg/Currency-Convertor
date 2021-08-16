@@ -81,12 +81,13 @@ class CurrencyViewModelTests: XCTestCase {
     func test_CreateVMForCurrencyExchangeResponse()  {
 
         XCTAssertNoThrow(try JSONDecoder().decode(CurrencyExchangeResponse.self, from: jsonLiveData))
-        
-        
+
         let result = try! JSONDecoder().decode(CurrencyExchangeResponse.self, from: jsonLiveData)
         self.currencyConvertorListVM.createVMForCurrencyExchangeResponse(result: result)
         
         XCTAssertEqual(11, self.currencyConvertorListVM.currencyViewModels.count)
+        
+        XCTAssertEqual(57.8936, self.currencyConvertorListVM.currencyViewModels[1].usdExchangeRate)
         
         let val =  self.currencyConvertorListVM.currencyViewModelForCountryCode(countryCode: "USDAFN", sourceCountryCode:"")
                 
@@ -102,6 +103,7 @@ class CurrencyViewModelTests: XCTestCase {
         let val =  self.currencyConvertorListVM.currencyViewModelForCountryCode(countryCode: "USDAFN", sourceCountryCode:"")
                 
         XCTAssertNotNil(val)
+        XCTAssertEqual("USDAFN", val?.currencyCode)
     }
 
     

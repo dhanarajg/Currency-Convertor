@@ -39,7 +39,7 @@ extension CurrencyListViewModel {
             currencyVM?.usdCurrencyCode = model.key
             
             return currencyVM!
-        }
+        }.sorted(by: ({ $0.currencyName! < $1.currencyName! }))
     }
     
     

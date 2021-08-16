@@ -19,6 +19,7 @@ class CurrencyConvertorViewController: UIViewController {
     let currencyListViewModel = CurrencyListViewModel()
     var selectedCountryCode: String = "USD"
     
+    
     override func viewDidLoad() {
       
         super.viewDidLoad()
@@ -36,21 +37,22 @@ class CurrencyConvertorViewController: UIViewController {
         self.loadCurrencies()
     }
     
-    
+    //load from server
     func loadCurrencies() {
         currencyListViewModel.loadExchangeData()
     }
     
     
+    //country changed.. reload
     func currencyDidSelect(countrycode: String, index: Int) {
         
         self.selectedCountryCode = self.currencyListViewModel.currencyCodeForIndex(index: index)
         self.exchangeRatesCollectionView.reloadData()
-        
     }
 
     
-    func addDoneButtonOnKeyboard (textField: UITextField, keyboardDoneCallback: Selector?) {
+        //done button on keyoard added
+        func addDoneButtonOnKeyboard (textField: UITextField, keyboardDoneCallback: Selector?) {
         
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         doneToolbar.barStyle = .default
@@ -59,7 +61,6 @@ class CurrencyConvertorViewController: UIViewController {
         
         let done: UIBarButtonItem = UIBarButtonItem(title: "Convert".localized, style: .done, target: self, action: keyboardDoneCallback)
         
-        
         let items = [flexSpace, done]
         doneToolbar.items = items
         doneToolbar.sizeToFit()
@@ -67,6 +68,7 @@ class CurrencyConvertorViewController: UIViewController {
         textField.inputAccessoryView = doneToolbar
     }
     
+    //amount changed.. reload
     @objc func currencyAmountDoneTapped() {
         currencyAmountTextField.resignFirstResponder()
         self.exchangeRatesCollectionView.reloadData()
