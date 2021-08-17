@@ -34,14 +34,22 @@ class CurrencyConvertorViewController: UIViewController {
         currencyListViewModel.exhangeRatesDidLoad = exhangeRatesDidLoad
         currencyListViewModel.showProgressBar = showProgressBar
         
-        self.loadCurrencies()
+        self.setUp()
     }
     
     //load from server
-    func loadCurrencies() {
+    func setUp() {
+      
         currencyListViewModel.loadExchangeData()
+        
+        currencyAmountTextField.addTarget(self, action: #selector(currencyAmountTextFieldDidChange), for: .editingChanged)
+
     }
     
+    @objc func currencyAmountTextFieldDidChange() {
+        
+        self.exchangeRatesCollectionView.reloadData()
+    }
     
     //country changed.. reload
     func currencyDidSelect(countrycode: String, index: Int) {
@@ -77,6 +85,7 @@ class CurrencyConvertorViewController: UIViewController {
 
 
 extension CurrencyConvertorViewController: UITextFieldDelegate {
+    
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         

@@ -195,8 +195,8 @@
 			isa = PBXGroup;
 			children = (
 				0F60AE5C26C66F000010D1F0 /* CurrencyViewModel.swift */,
-				0FB5F42926CA2B91004649AA /* CurrencyListViewModel+Extension.swift */,
 				0FCB75C026CABCAC0021C6F7 /* CurrencyListViewModel.swift */,
+				0FB5F42926CA2B91004649AA /* CurrencyListViewModel+Extension.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";

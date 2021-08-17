@@ -10,6 +10,7 @@ import Reachability
 
 protocol CurrencyListViewModelDelegate {
     
+    //Implemented can set these variables in ViewModel to get callback
     func showAlertOnUI(message: String)
     func exhangeRatesDidLoad()
     func showProgressBar(show: Bool)

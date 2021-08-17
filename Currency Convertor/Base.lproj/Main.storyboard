@@ -57,13 +57,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="158" height="112"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKf-T1-AfW">
-                                                    <rect key="frame" x="8" y="8" width="65" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKf-T1-AfW">
+                                                    <rect key="frame" x="8" y="8" width="67" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="67" id="7kt-i0-ydG"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Country" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="blT-qG-KVc">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Country" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="blT-qG-KVc">
                                                     <rect key="frame" x="89" y="8" width="61" height="20.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="61" id="2P1-tj-Pfr"/>
@@ -72,10 +75,10 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jZ3-j6-vaz">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jZ3-j6-vaz">
                                                     <rect key="frame" x="8" y="62.5" width="142" height="27"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="142" id="OhN-Cm-uhN"/>
+                                                        <constraint firstAttribute="width" priority="750" constant="142" id="OVY-Vg-Vb2"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
                                                     <nil key="textColor"/>
@@ -86,12 +89,10 @@
                                                 <constraint firstItem="OKf-T1-AfW" firstAttribute="leading" secondItem="aXp-HX-0LE" secondAttribute="leading" constant="8" id="5Rd-YO-iyZ"/>
                                                 <constraint firstItem="jZ3-j6-vaz" firstAttribute="leading" secondItem="aXp-HX-0LE" secondAttribute="leading" constant="8" id="6Ad-KW-knl"/>
                                                 <constraint firstAttribute="trailing" secondItem="blT-qG-KVc" secondAttribute="trailing" constant="8" id="H2q-Ue-jez"/>
+                                                <constraint firstAttribute="trailing" secondItem="jZ3-j6-vaz" secondAttribute="trailing" constant="8" id="JeJ-UZ-Qgy"/>
                                                 <constraint firstItem="OKf-T1-AfW" firstAttribute="top" secondItem="aXp-HX-0LE" secondAttribute="top" constant="8" id="PoT-Hg-flv"/>
                                                 <constraint firstItem="blT-qG-KVc" firstAttribute="top" secondItem="aXp-HX-0LE" secondAttribute="top" constant="8" id="aK0-na-b9b"/>
-                                                <constraint firstItem="jZ3-j6-vaz" firstAttribute="centerX" secondItem="aXp-HX-0LE" secondAttribute="centerX" id="gOQ-8g-ual"/>
-                                                <constraint firstAttribute="trailing" secondItem="jZ3-j6-vaz" secondAttribute="trailing" constant="8" id="iMw-AM-yPE"/>
                                                 <constraint firstAttribute="bottom" secondItem="jZ3-j6-vaz" secondAttribute="bottom" constant="22.5" id="ptc-Mx-oBE"/>
-                                                <constraint firstItem="blT-qG-KVc" firstAttribute="leading" secondItem="OKf-T1-AfW" secondAttribute="trailing" constant="16" id="uSS-xZ-bt9"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <color key="backgroundColor" systemColor="systemGray3Color"/>
@@ -108,7 +109,7 @@
                                     <outlet property="delegate" destination="bTx-8b-gSj" id="Naz-AJ-4V5"/>
                                 </connections>
                             </collectionView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please enter an amount to convert" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8BT-B3-VIB">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please enter an amount to convert" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8BT-B3-VIB">
                                 <rect key="frame" x="20" y="108" width="374" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done"/>
