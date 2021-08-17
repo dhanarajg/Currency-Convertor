@@ -42,6 +42,7 @@ extension CurrencyListViewModel {
         }.sorted(by: ({ $0.currencyName! < $1.currencyName! }))
     }
     
+    
     func createVMForCurrencyExchangeListResponse(result: CurrencyListResponse) {
         //Create models for supported countries
         let models = result.currencies ?? [:]
@@ -61,28 +62,49 @@ extension CurrencyListViewModel {
         }
         
         self.showProgressBar?(true)
-
+        
         Webservice().load(resource: resource) { [weak self] result in
             
-            if let result = result {
-                if result.success == true {
+            switch result {
+            
+            case .failure(let err):
+                var errorMessage = ""
+                switch err {
+                case .decodingErorr:
+                    errorMessage = "Decoding error of Exchange Rates. Please check after some time!".localized
                     
-                    self?.createVMForCurrencyExchangeResponse(result: result)
-                    
-                    DispatchQueue.main.async {
+                case .unknownError:
+                    errorMessage = "Unknown error of Exchange Rates. Please check after some time!".localized
+                }
+                
+                DispatchQueue.main.async {
+                    self?.showProgressBar?(false)
+                    self?.showAlertOnUI?(errorMessage)
+                }
+                
+                
+            case .success(let result):
+                if let result = result {
+                    if result.success == true {
                         
-                        self?.exhangeRatesDidLoad?()
-                        self?.showProgressBar?(false)
-                    }
-                } else {
-                    
-                    DispatchQueue.main.async {
+                        self?.createVMForCurrencyExchangeResponse(result: result)
                         
-                        self?.showProgressBar?(false)
-                        self?.showAlertOnUI?("Fetching exchange value failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
+                        DispatchQueue.main.async {
+                            
+                            self?.showProgressBar?(false)
+                            self?.exhangeRatesDidLoad?()
+                        }
+                    } else {
+                        
+                        DispatchQueue.main.async {
+                            
+                            self?.showProgressBar?(false)
+                            self?.showAlertOnUI?("Fetching exchange value failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
+                        }
                     }
                 }
             }
+            
         }
     }
     
@@ -104,27 +126,38 @@ extension CurrencyListViewModel {
         
         Webservice().load(resource: resource) { [weak self] result in
             
-            if let result = result {
-                if result.success == true {
+            switch result {
+            
+            case .failure(let err):
+                var errorMessage = ""
+                switch err {
+                case .decodingErorr:
+                    errorMessage = "Decoding error of Exchange List. Please check after some time!".localized
                     
-                    //Create models for supported countries
-                    self?.createVMForCurrencyExchangeListResponse(result: result)
-                    
-                    //Load the live rate of exchange
-                    DispatchQueue.main.async {
-                        self?.loadLiveCurrencyExchangeRates()
-                 }
+                case .unknownError:
+                    errorMessage = "Unknown error of Exchange List. Please check after some time!".localized
                 }
-            } else {
                 
-                //some error occured!
                 DispatchQueue.main.async {
-                    
                     self?.showProgressBar?(false)
-                    self?.showAlertOnUI?("Fetching exchange list failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
-                }                
+                    self?.showAlertOnUI?(errorMessage)
+                }
+                
+            case .success(let result):
+                
+                if let result = result {
+                    if result.success == true {
+                        
+                        //Create models for supported countries
+                        self?.createVMForCurrencyExchangeListResponse(result: result)
+                        
+                        //Load the live rate of exchange
+                        DispatchQueue.main.async {
+                            self?.loadLiveCurrencyExchangeRates()
+                        }
+                    }
+                }
             }
         }
-    }
-    
+    }    
 }
