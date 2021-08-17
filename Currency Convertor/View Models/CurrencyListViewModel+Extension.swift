@@ -54,11 +54,8 @@ extension CurrencyListViewModel {
             return nil
         }
         
-        DispatchQueue.main.async {
-            
-            self.showProgressBar?(true)
-        }
-        
+        self.showProgressBar?(true)
+
         Webservice().load(resource: resource) { [weak self] result in
             
             
@@ -77,7 +74,7 @@ extension CurrencyListViewModel {
                     DispatchQueue.main.async {
                         
                         self?.showProgressBar?(false)
-                        self?.showAlertOnUI?("You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
+                        self?.showAlertOnUI?("Fetching exchange value failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
                     }
                 }
             }
@@ -115,7 +112,9 @@ extension CurrencyListViewModel {
                     self?.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, currencyName: $0.value)  }
                     
                     //Load the live rate of exchange
-                    self?.loadLiveCurrencyExchangeRates()
+                    DispatchQueue.main.async {
+                        self?.loadLiveCurrencyExchangeRates()
+                 }
                 }
             } else {
                 
@@ -123,7 +122,7 @@ extension CurrencyListViewModel {
                 DispatchQueue.main.async {
                     
                     self?.showProgressBar?(false)
-                    self?.showAlertOnUI?("You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
+                    self?.showAlertOnUI?("Fetching exchange list failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
                 }                
             }
         }
