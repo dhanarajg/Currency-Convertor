@@ -94,6 +94,17 @@ class CurrencyListViewModel: NSObject {
     }
     
     
+    func currencyExchangeRate (selectedCountryCode: String, destinationCountryCode: String, index: Int) -> Double {
+        
+        let selectedCountryVM = self.currencyViewModelForCountryCode(countryCode: selectedCountryCode, sourceCountryCode: "")
+        let destinationVM = self.currencyViewModelForCountryCode(countryCode: destinationCountryCode, sourceCountryCode: "")
+        
+        let convertedAmount = self.convertCurrency(amountToConvert: 1, sourceUsdRate: selectedCountryVM?.usdExchangeRate ?? 1, destinationUsdRate: destinationVM?.usdExchangeRate ?? 1)
+        return convertedAmount
+    }
+
+    
+    
     func numberOfExchanges() -> Int {
         return self.currencyViewModels.count
     }

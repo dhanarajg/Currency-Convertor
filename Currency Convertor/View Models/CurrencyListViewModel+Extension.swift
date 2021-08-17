@@ -58,7 +58,6 @@ extension CurrencyListViewModel {
 
         Webservice().load(resource: resource) { [weak self] result in
             
-            
             if let result = result {
                 if result.success == true {
                     
