@@ -8,7 +8,7 @@
 import Foundation
 
 
-private let ACCESS_KEY = "36026942ea8967232f3e47514a02f09b"
+private let ACCESS_KEY = "e3aea275f2c7552bb739e73b62212b26"
 private let BASE_URL = "http://api.currencylayer.com" //http only in free tier
 
 struct Constants {
