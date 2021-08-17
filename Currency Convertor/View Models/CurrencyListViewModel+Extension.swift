@@ -32,7 +32,7 @@ extension CurrencyListViewModel {
         
         let models = result.quotes ?? [:]
         self.currencyViewModels = models.map { model in
-
+            
             let currencyVM = self.currencyViewModelForCountryCode(countryCode: model.key, sourceCountryCode: result.source ?? "")
             
             currencyVM?.usdExchangeRate = model.value

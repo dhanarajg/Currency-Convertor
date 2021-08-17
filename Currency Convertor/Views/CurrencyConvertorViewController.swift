@@ -21,29 +21,25 @@ class CurrencyConvertorViewController: UIViewController {
     
     
     override func viewDidLoad() {
-      
+        
         super.viewDidLoad()
+        self.setUp()
+    }
+    
+    //load from server and other configs
+    func setUp() {
         
         self.addDoneButtonOnKeyboard(textField: currencyAmountTextField, keyboardDoneCallback: #selector(currencyAmountDoneTapped))
+        currencyAmountTextField.addTarget(self, action: #selector(currencyAmountTextFieldDidChange), for: .editingChanged)
         
         currencySelectionTextField.didSelect { [weak self] title, index, id in
             self?.currencyDidSelect(countrycode: title, index: index)
         }
         
+        currencyListViewModel.loadExchangeData()
         currencyListViewModel.showAlertOnUI = showAlertOnUI
         currencyListViewModel.exhangeRatesDidLoad = exhangeRatesDidLoad
         currencyListViewModel.showProgressBar = showProgressBar
-        
-        self.setUp()
-    }
-    
-    //load from server
-    func setUp() {
-      
-        currencyListViewModel.loadExchangeData()
-        
-        currencyAmountTextField.addTarget(self, action: #selector(currencyAmountTextFieldDidChange), for: .editingChanged)
-
     }
     
     @objc func currencyAmountTextFieldDidChange() {
@@ -57,10 +53,10 @@ class CurrencyConvertorViewController: UIViewController {
         self.selectedCountryCode = self.currencyListViewModel.currencyCodeForIndex(index: index)
         self.exchangeRatesCollectionView.reloadData()
     }
-
     
-        //done button on keyoard added
-        func addDoneButtonOnKeyboard (textField: UITextField, keyboardDoneCallback: Selector?) {
+    
+    //done button on keyoard added
+    func addDoneButtonOnKeyboard (textField: UITextField, keyboardDoneCallback: Selector?) {
         
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         doneToolbar.barStyle = .default
@@ -85,7 +81,6 @@ class CurrencyConvertorViewController: UIViewController {
 
 
 extension CurrencyConvertorViewController: UITextFieldDelegate {
-    
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -134,7 +129,7 @@ extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectio
 
 
 extension CurrencyConvertorViewController: CurrencyListViewModelDelegate {
-
+    
     func showAlertOnUI(message: String) {
         
         let alert = UIAlertController.init(title: "Alert!".localized, message: message.localized, preferredStyle: .alert)
@@ -148,7 +143,7 @@ extension CurrencyConvertorViewController: CurrencyListViewModelDelegate {
         
         let currencyListDisplayNames = currencyListViewModel.currencyListDisplayNames()
         self.currencySelectionTextField.optionArray = currencyListDisplayNames
-
+        
         self.currencySelectionTextField.selectedIndex = 0
         self.currencySelectionTextField.text = currencyListDisplayNames[0]
         self.currencyDidSelect(countrycode: currencyListDisplayNames[0], index: 0)
@@ -159,7 +154,7 @@ extension CurrencyConvertorViewController: CurrencyListViewModelDelegate {
         
         if show {
             ProgressHUD.animationType = .circleRotateChase
-           ProgressHUD.show()
+            ProgressHUD.show()
         } else {
             ProgressHUD.dismiss()
         }

@@ -25,7 +25,7 @@ struct Constants {
         let url = "\(BASE_URL)/live?access_key=\(ACCESS_KEY.escaped())"
         return URL(string: url)!
     }
-
+    
 }
 
 
