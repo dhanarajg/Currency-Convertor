@@ -87,7 +87,7 @@ class CurrencyListViewModel: NSObject {
         
     }
     
-    func currencyExchangeAmount (amountToConvert: Double, selectedCountryCode: String, destinationCountryCode: String, index: Int) -> Double {
+    func currencyExchangeAmount (amountToConvert: Double, selectedCountryCode: String, destinationCountryCode: String) -> Double {
         
         let selectedCountryVM = self.currencyViewModelForCountryCode(countryCode: selectedCountryCode, sourceCountryCode: "")
         let destinationVM = self.currencyViewModelForCountryCode(countryCode: destinationCountryCode, sourceCountryCode: "")
@@ -97,13 +97,24 @@ class CurrencyListViewModel: NSObject {
     }
     
     
-    func currencyExchangeRate (selectedCountryCode: String, destinationCountryCode: String, index: Int) -> Double {
+    func currencyExchangeRate (selectedCountryCode: String, destinationCountryCode: String) -> Double {
         
         let selectedCountryVM = self.currencyViewModelForCountryCode(countryCode: selectedCountryCode, sourceCountryCode: "")
         let destinationVM = self.currencyViewModelForCountryCode(countryCode: destinationCountryCode, sourceCountryCode: "")
         
         let convertedAmount = self.convertCurrency(amountToConvert: 1, sourceUsdRate: selectedCountryVM?.usdExchangeRate ?? 1, destinationUsdRate: destinationVM?.usdExchangeRate ?? 1)
         return convertedAmount
+    }
+    
+    func curreencyCellViewModelFor(amountToConvert: Double, selectedCountryCode: String, index: Int) -> ExchangeRateCollectionViewCellViewModel {
+        
+        let currencyVM = self.currencyAtIndex(index:index)
+        
+        let exchangeAmount = self.currencyExchangeAmount(amountToConvert: amountToConvert, selectedCountryCode: selectedCountryCode , destinationCountryCode: currencyVM.currencyCode ?? "")
+        let exchangeRate = self.currencyExchangeRate(selectedCountryCode: selectedCountryCode, destinationCountryCode: currencyVM.currencyCode ?? "")
+
+        
+        return ExchangeRateCollectionViewCellViewModel(currencyCode: currencyVM.currencyCode ?? "", exchangeRate: exchangeRate, exchangeAmount: exchangeAmount)
     }
 
     

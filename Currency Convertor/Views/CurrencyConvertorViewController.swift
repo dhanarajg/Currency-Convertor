@@ -121,15 +121,12 @@ extension CurrencyConvertorViewController: UICollectionViewDelegate, UICollectio
         }
         
         let currencyAmount = Double(currencyAmountTextField.text ?? "0") ?? 0
-        let currencyVM = self.currencyListViewModel.currencyAtIndex(index:indexPath.row)
-        
-        let exchangeAmount = self.currencyListViewModel.currencyExchangeAmount(amountToConvert: currencyAmount, selectedCountryCode: self.selectedCountryCode , destinationCountryCode: currencyVM.currencyCode ?? "", index: indexPath.row)
-        let exchangeRate = self.currencyListViewModel.currencyExchangeRate(selectedCountryCode: self.selectedCountryCode, destinationCountryCode: currencyVM.currencyCode ?? "", index: indexPath.row)
-        
-        
-        cell.countryLabel.text = currencyVM.currencyCode
-        cell.exhangeAmountLabel.text = String(format: "%.2f", exchangeAmount)
-        cell.rateLabel.text = String(format: "%.2f", exchangeRate)
+
+       let exchangeCellVM =  self.currencyListViewModel.curreencyCellViewModelFor(amountToConvert: currencyAmount, selectedCountryCode: self.selectedCountryCode, index: indexPath.row)
+                
+        cell.countryLabel.text = exchangeCellVM.currencyCode
+        cell.exhangeAmountLabel.text = String(format: "%.2f", exchangeCellVM.exchangeAmount)
+        cell.rateLabel.text = String(format: "%.2f", exchangeCellVM.exchangeRate)
         
         return cell
     }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0BDD2984239CA35396A2F3E6 /* Pods_Currency_Convertor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 944CA2E3EAF1B9C371A02A28 /* Pods_Currency_Convertor.framework */; };
+		0F2C84B326CBB1A5009171BA /* ExchangeRateCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2C84B226CBB1A5009171BA /* ExchangeRateCollectionViewCellViewModel.swift */; };
 		0F60AE1D26C63ED20010D1F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F60AE1C26C63ED20010D1F0 /* AppDelegate.swift */; };
 		0F60AE1F26C63ED20010D1F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F60AE1E26C63ED20010D1F0 /* SceneDelegate.swift */; };
 		0F60AE2426C63ED20010D1F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F60AE2226C63ED20010D1F0 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F2C84B226CBB1A5009171BA /* ExchangeRateCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRateCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		0F60AE1926C63ED10010D1F0 /* Currency Convertor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Currency Convertor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F60AE1C26C63ED20010D1F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0F60AE1E26C63ED20010D1F0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				0F60AE5C26C66F000010D1F0 /* CurrencyViewModel.swift */,
 				0FCB75C026CABCAC0021C6F7 /* CurrencyListViewModel.swift */,
 				0FB5F42926CA2B91004649AA /* CurrencyListViewModel+Extension.swift */,
+				0F2C84B226CBB1A5009171BA /* ExchangeRateCollectionViewCellViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 			files = (
 				0F60AE5726C66A430010D1F0 /* Currency.swift in Sources */,
 				0F60AE5D26C66F000010D1F0 /* CurrencyViewModel.swift in Sources */,
+				0F2C84B326CBB1A5009171BA /* ExchangeRateCollectionViewCellViewModel.swift in Sources */,
 				0F60AE1D26C63ED20010D1F0 /* AppDelegate.swift in Sources */,
 				0F60AE5A26C66D150010D1F0 /* WebService.swift in Sources */,
 				0F60AE5126C64C350010D1F0 /* ExchangeRateCollectionViewCell.swift in Sources */,

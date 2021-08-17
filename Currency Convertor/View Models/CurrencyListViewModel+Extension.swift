@@ -100,10 +100,8 @@ extension CurrencyListViewModel {
                         self?.showProgressBar?(false)
                         self?.showAlertOnUI?("Fetching exchange value failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
                     }
-                    
                 }
             }
-            
         }
     }
     
@@ -160,7 +158,6 @@ extension CurrencyListViewModel {
                         self?.showProgressBar?(false)
                         self?.showAlertOnUI?("Fetching Exchange List failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
                     }
-                    
                 }
             }
         }
