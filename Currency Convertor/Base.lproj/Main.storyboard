@@ -132,7 +132,13 @@
                             <constraint firstItem="J8F-Gk-fex" firstAttribute="trailing" secondItem="DCH-Nj-dd9" secondAttribute="trailing" constant="20" id="gQL-ae-NyX"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Currency Convertor" largeTitleDisplayMode="always" id="HNF-xz-cOw"/>
+                    <navigationItem key="navigationItem" title="Currency Convertor" largeTitleDisplayMode="always" id="HNF-xz-cOw">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="hbV-Ro-2Xd">
+                            <connections>
+                                <action selector="reloadTapped:" destination="bTx-8b-gSj" id="ibc-a1-hdD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="currencyAmountTextField" destination="8BT-B3-VIB" id="qKQ-7x-v5O"/>
                         <outlet property="currencySelectionTextField" destination="DCH-Nj-dd9" id="xaR-zH-C5C"/>

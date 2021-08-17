@@ -26,6 +26,13 @@ class CurrencyConvertorViewController: UIViewController {
         self.setUp()
     }
     
+    
+    @IBAction func reloadTapped(_ sender: Any) {
+        
+        currencyListViewModel.loadExchangeData()
+    }
+    
+    
     //load from server and other configs
     func setUp() {
         

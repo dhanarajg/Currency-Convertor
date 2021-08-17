@@ -42,6 +42,9 @@ class CurrencyListViewModel: NSObject {
         //load currency and exchange rates
         self.loadCurrencyList()
         
+        //remove existing timer
+        self.timer?.invalidate()
+        
         //Periodically update live rates (30 minutes)
         self.timer = Timer.scheduledTimer(withTimeInterval: 60*30, repeats: true) { [weak self] timer in
             
