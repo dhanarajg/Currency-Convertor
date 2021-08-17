@@ -21,10 +21,7 @@ class Webservice {
         URLSession.shared.dataTask(with: request) { data, response, error in
             
             if let data = data {
-                
-                DispatchQueue.main.async {
-                    completion(resource.parse(data))
-                }
+                completion(resource.parse(data))
             } else {
                 completion(nil)
             }

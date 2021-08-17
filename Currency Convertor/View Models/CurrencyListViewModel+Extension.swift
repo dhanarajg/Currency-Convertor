@@ -96,11 +96,6 @@ extension CurrencyListViewModel {
             if let currencies = try? JSONDecoder().decode(CurrencyListResponse.self, from: data) {
                 return currencies
             }
-            
-            DispatchQueue.main.async {
-                self.showProgressBar?(false)
-            }
-            
             return nil
         }
         
