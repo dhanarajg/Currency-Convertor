@@ -26,7 +26,7 @@ class CurrencyViewModelTests: XCTestCase {
             "USDALL": 126.1652,
             "USDAMD": 475.306,
             "USDANG": 1.78952,
-            "USDAOA": 109.216875,
+            "USDAOA": 637.92,
             "USDARS": 8.901966,
             "USDAUD": 1.269072,
             "USDAWG": 1.792375,
@@ -74,14 +74,13 @@ class CurrencyViewModelTests: XCTestCase {
         
         let convertedAmount2 = self.currencyConvertorListVM.convertCurrency(amountToConvert: 100, sourceUsdRate: 74, destinationUsdRate: 111)
         XCTAssertNotEqual(148.64864864864865, convertedAmount2)
-
     }
     
     
     func test_CreateVMForCurrencyExchangeResponse()  {
 
         XCTAssertNoThrow(try JSONDecoder().decode(CurrencyExchangeResponse.self, from: jsonLiveData))
-
+      
         let result = try! JSONDecoder().decode(CurrencyExchangeResponse.self, from: jsonLiveData)
         self.currencyConvertorListVM.createVMForCurrencyExchangeResponse(result: result)
         
@@ -118,5 +117,33 @@ class CurrencyViewModelTests: XCTestCase {
         self.currencyConvertorListVM.loadExchangeData()
         XCTAssertEqual(30*60, self.currencyConvertorListVM.timer?.timeInterval)
     }
+
+    
+    
+    func test_CurrencyExchangeAmount()  {
+
+        let res = try? JSONDecoder().decode(CurrencyListResponse.self, from: jsonCurrencyListData)
+        self.currencyConvertorListVM.createVMForCurrencyExchangeListResponse(result: res!)
+        let result = try? JSONDecoder().decode(CurrencyExchangeResponse.self, from: jsonLiveData)
+        self.currencyConvertorListVM.createVMForCurrencyExchangeResponse(result: result!)
+        
+        let exchangeAmount = self.currencyConvertorListVM.currencyExchangeAmount(amountToConvert: 100, selectedCountryCode: "AED", destinationCountryCode: "AOA", index: 0)
+        XCTAssertEqual(17367.904334951814, exchangeAmount)
+    }
+    
+    
+    
+    func test_CurrencyExchangRate()  {
+
+        let res = try? JSONDecoder().decode(CurrencyListResponse.self, from: jsonCurrencyListData)
+        self.currencyConvertorListVM.createVMForCurrencyExchangeListResponse(result: res!)
+        let result = try? JSONDecoder().decode(CurrencyExchangeResponse.self, from: jsonLiveData)
+        self.currencyConvertorListVM.createVMForCurrencyExchangeResponse(result: result!)
+        
+        let exchangeRate = self.currencyConvertorListVM.currencyExchangeRate(selectedCountryCode: "AED", destinationCountryCode: "AOA", index: 0)
+                        
+        XCTAssertEqual(173.67904334951814, exchangeRate)
+    }
+
 
 }

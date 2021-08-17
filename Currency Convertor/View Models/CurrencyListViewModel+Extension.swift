@@ -42,6 +42,12 @@ extension CurrencyListViewModel {
         }.sorted(by: ({ $0.currencyName! < $1.currencyName! }))
     }
     
+    func createVMForCurrencyExchangeListResponse(result: CurrencyListResponse) {
+        //Create models for supported countries
+        let models = result.currencies ?? [:]
+        self.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, currencyName: $0.value)  }
+    }
+    
     
     func loadLiveCurrencyExchangeRates() {
         
@@ -107,8 +113,7 @@ extension CurrencyListViewModel {
                 if result.success == true {
                     
                     //Create models for supported countries
-                    let models = result.currencies ?? [:]
-                    self?.currencyViewModels = models.map { CurrencyViewModel(currencyCode: $0.key, currencyName: $0.value)  }
+                    self?.createVMForCurrencyExchangeListResponse(result: result)
                     
                     //Load the live rate of exchange
                     DispatchQueue.main.async {
