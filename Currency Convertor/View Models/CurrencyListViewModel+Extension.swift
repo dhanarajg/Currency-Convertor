@@ -82,26 +82,25 @@ extension CurrencyListViewModel {
                     self?.showAlertOnUI?(errorMessage)
                 }
                 
-                
             case .success(let result):
-                if let result = result {
-                    if result.success == true {
+                
+                if result.success == true {
+                    
+                    self?.createVMForCurrencyExchangeResponse(result: result)
+                    
+                    DispatchQueue.main.async {
                         
-                        self?.createVMForCurrencyExchangeResponse(result: result)
-                        
-                        DispatchQueue.main.async {
-                            
-                            self?.showProgressBar?(false)
-                            self?.exhangeRatesDidLoad?()
-                        }
-                    } else {
-                        
-                        DispatchQueue.main.async {
-                            
-                            self?.showProgressBar?(false)
-                            self?.showAlertOnUI?("Fetching exchange value failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
-                        }
+                        self?.showProgressBar?(false)
+                        self?.exhangeRatesDidLoad?()
                     }
+                } else {
+                    
+                    DispatchQueue.main.async {
+                        
+                        self?.showProgressBar?(false)
+                        self?.showAlertOnUI?("Fetching exchange value failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
+                    }
+                    
                 }
             }
             
@@ -145,17 +144,23 @@ extension CurrencyListViewModel {
                 
             case .success(let result):
                 
-                if let result = result {
-                    if result.success == true {
-                        
-                        //Create models for supported countries
-                        self?.createVMForCurrencyExchangeListResponse(result: result)
-                        
-                        //Load the live rate of exchange
-                        DispatchQueue.main.async {
-                            self?.loadLiveCurrencyExchangeRates()
-                        }
+                if result.success == true {
+                    
+                    //Create models for supported countries
+                    self?.createVMForCurrencyExchangeListResponse(result: result)
+                    
+                    //Load the live rate of exchange
+                    DispatchQueue.main.async {
+                        self?.loadLiveCurrencyExchangeRates()
                     }
+                } else {
+                    
+                    DispatchQueue.main.async {
+                        
+                        self?.showProgressBar?(false)
+                        self?.showAlertOnUI?("Fetching Exchange List failed!. You have consumed your monthly quota or Unknown error occured. Please check after some time!".localized)
+                    }
+                    
                 }
             }
         }

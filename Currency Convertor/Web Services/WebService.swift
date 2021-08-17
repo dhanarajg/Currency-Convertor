@@ -20,7 +20,7 @@ struct Resource <T> {
 class Webservice {
     
     
-    func load <T>(resource: Resource<T>, completion: @escaping (Result<T?, NetworkError>) -> Void) {
+    func load <T>(resource: Resource<T>, completion: @escaping (Result<T, NetworkError>) -> Void) {
         
         let request = URLRequest.init(url: resource.url)
         URLSession.shared.dataTask(with: request) { data, response, error in
